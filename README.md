@@ -2,6 +2,8 @@
 
 A modern, animated employee photo wall built with React, TypeScript, and Vite. Inspired by the original [HubSpot Facewall](https://github.com/HubSpot/facewall) open-source project, this version is a ground-up rewrite designed for today's web — featuring smooth animations, rich customization, multiple data sources, and a polished settings UI.
 
+![Facewall preview](docs/preview.png)
+
 ---
 
 ## What It Does
