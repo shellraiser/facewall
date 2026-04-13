@@ -1,0 +1,81 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #fff;
+  margin-right: 16px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.link {
+  padding: 6px 14px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Full screen button */
+.fsBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.82em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.fsBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.fsIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}

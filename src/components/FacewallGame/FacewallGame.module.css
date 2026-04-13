@@ -1,0 +1,217 @@
+.root {
+  display: flex;
+  min-height: 100vh;
+  background: #fff;
+  color: #333;
+}
+
+.sidebar {
+  width: 180px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  background: #f5f5f5;
+}
+
+.sidebarInner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+}
+
+.sidebarTile {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 4px;
+  position: relative;
+}
+
+.sidebarTile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+.title {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.currentEmployee {
+  width: 400px;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  transition: border 0.2s;
+}
+
+.currentEmployee.correct {
+  border: 4px solid #4caf50;
+}
+
+.currentEmployee img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.guesses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 400px;
+}
+
+.guessOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #fff;
+}
+
+.guessOption:hover:not(.guessed):not(.correct) {
+  border-color: #888;
+  background: #f9f9f9;
+}
+
+.guessOption.guessed {
+  border-color: #ef5350;
+  background: #ffebee;
+  cursor: default;
+}
+
+.guessOption.correct {
+  border-color: #4caf50;
+  background: #e8f5e9;
+  cursor: default;
+}
+
+.guessOption img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.guessName {
+  font-size: 1em;
+}
+
+.scoreBoard {
+  margin-top: 24px;
+  font-size: 1.1em;
+  color: #555;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.scoreBoard:hover {
+  background: #f5f5f5;
+}
+
+.scoreBoard strong {
+  color: #333;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .currentEmployee {
+    width: 100vw;
+    height: 100vw;
+    border-radius: 0;
+  }
+
+  .guesses {
+    width: 100%;
+    padding: 0 8px;
+  }
+}
+
+/* Modal overlay */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px 32px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.modal h2 {
+  margin: 0 0 16px;
+  font-size: 1.4em;
+}
+
+.modal p {
+  margin: 0 0 16px;
+  color: #555;
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.btnPrimary {
+  background: #1976d2;
+  color: #fff;
+}
+
+.btnPrimary:hover {
+  background: #1565c0;
+}
+
+.btnSecondary {
+  background: #eee;
+  color: #333;
+}
+
+.btnSecondary:hover {
+  background: #ddd;
+}

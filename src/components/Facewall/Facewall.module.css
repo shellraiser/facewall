@@ -1,0 +1,232 @@
+.root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #1a2535;
+}
+
+/* ── Rows ──────────────────────────────────────────────── */
+.rowsContainer {
+  position: absolute;
+  inset: 0;
+  top: 44px; /* overridden via inline style when nav is hidden */
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rowStrip {
+  display: flex;
+  will-change: transform;
+}
+
+.tile {
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: #2a3545;
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Highlight ring ────────────────────────────────────── */
+.highlightRing {
+  position: fixed;
+  z-index: 55;
+  pointer-events: none;
+  border-radius: 14px;
+  --ring-color: #a855f7;
+  --ring-glow:  rgba(168, 85, 247, 0.35);
+  animation: highlightPulse 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes highlightPulse {
+  from {
+    box-shadow:
+      0 0 0 2px var(--ring-color),
+      0 0 14px 6px  var(--ring-glow),
+      0 0 38px 14px var(--ring-glow);
+  }
+  to {
+    box-shadow:
+      0 0 0 4px var(--ring-color),
+      0 0 24px 12px var(--ring-glow),
+      0 0 60px 28px var(--ring-glow);
+  }
+}
+
+/* ── Backdrop ──────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* ── Featured card wrapper ─────────────────────────────── */
+.cardWrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  perspective: 900px;
+}
+
+/* .card: clips its own content in local 2D space. The 3D rotation lives on
+   the parent div, so the browser composites the rounded card first, then
+   projects it — no GPU compositor corner artifacts.
+   Glow box-shadow rotates with the card as one unit. */
+.card {
+  width: var(--card-size, 300px);
+  border-radius: 16px;
+  background: transparent;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 3px var(--card-glow, #a855f7),
+    0 0 24px 8px  var(--card-glow-soft, rgba(168, 85, 247, 0.45)),
+    0 0 60px 20px var(--card-glow-soft, rgba(168, 85, 247, 0.45));
+}
+
+/* Circle mode: no rectangular outline — glow handled by circlePhotoWrapper filter */
+.cardCircle {
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  border-radius: 0;
+}
+
+/* ── Wobble animation (applied to the rotating parent of .card) ─ */
+.cardWobble {
+  animation: cardWobble 1.2s ease-out forwards;
+}
+
+@keyframes cardWobble {
+  0%   { transform: perspective(800px) rotateY(0deg); }
+  25%  { transform: perspective(800px) rotateY(-12deg); }
+  50%  { transform: perspective(800px) rotateY(8deg); }
+  75%  { transform: perspective(800px) rotateY(-4deg); }
+  100% { transform: perspective(800px) rotateY(0deg); }
+}
+
+/* ── Photo / initials ──────────────────────────────────── */
+.cardPhoto {
+  width: var(--card-size, 300px);
+  height: var(--card-size, 300px);
+  object-fit: cover;
+  display: block;
+  /* clip-path is applied at paint time before GPU compositing, so it
+     survives the parent's 3D transform without corner artifacts */
+  clip-path: inset(0 round 16px 16px 0 0);
+}
+
+.cardPhotoCircle {
+  clip-path: circle(50%);
+}
+
+.cardInitials {
+  width: var(--card-size, 300px);
+  height: var(--card-size, 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8eaf0;
+  font-size: 5em;
+  font-weight: 700;
+  color: #9ea8c0;
+  clip-path: inset(0 round 16px 16px 0 0);
+}
+
+.cardInitialsCircle {
+  clip-path: circle(50%);
+  border-radius: 50%;
+}
+
+/* Circle mode: wrapper provides the glowing halo via filter:drop-shadow,
+   which follows the clipped circular shape in screen space */
+.circlePhotoWrapper {
+  filter:
+    drop-shadow(0 0 3px var(--card-glow, #a855f7))
+    drop-shadow(0 0 12px var(--card-glow-soft, rgba(168, 85, 247, 0.45)))
+    drop-shadow(0 0 32px var(--card-glow-soft, rgba(168, 85, 247, 0.45)));
+}
+
+/* ── Card body ─────────────────────────────────────────── */
+.cardBody {
+  padding: 20px 24px 24px;
+  text-align: center;
+  background: #fff;
+  border-radius: 0 0 16px 16px;
+  /* opacity + transform controlled inline for name slide-in */
+}
+
+.cardName {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.cardRole {
+  font-size: 0.9em;
+  color: #667;
+  line-height: 1.4;
+}
+
+/* ── Clock overlay ─────────────────────────────────────── */
+.clock {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  text-align: center;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.clockTime {
+  font-size: 2.8em;
+  font-weight: 200;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.clockDate {
+  font-size: 0.85em;
+  font-weight: 400;
+  opacity: 0.7;
+  margin-top: 6px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Pause badge ───────────────────────────────────────── */
+.pauseBadge {
+  position: fixed;
+  top: 58px;
+  right: 20px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.72);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
