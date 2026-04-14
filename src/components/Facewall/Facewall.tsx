@@ -52,12 +52,15 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 function calcNumRows(n: number): number {
-  if (n <= 12) return 2;
-  if (n <= 24) return 3;
-  if (n <= 40) return 4;
-  if (n <= 60) return 5;
-  if (n <= 84) return 6;
-  return 7;
+  if (n <= 12)   return 2;
+  if (n <= 24)   return 3;
+  if (n <= 40)   return 4;
+  if (n <= 60)   return 5;
+  if (n <= 84)   return 6;
+  if (n <= 200)  return 7;
+  if (n <= 600)  return 8;
+  if (n <= 2000) return 9;
+  return 10;
 }
 
 function queryTilePos(email: string): { left: number; top: number } | null {
@@ -126,6 +129,7 @@ function Tile({
         <img
           src={src}
           alt=""
+          loading="lazy"
           style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.4s' }}
           onLoad={() => setImgLoaded(true)}
           onError={() => setImgError(true)}
@@ -422,29 +426,13 @@ function Facewall({
     );
   }, [excludedRoles]);
 
-  // ── Photo probe ──────────────────────────────────────────────────
+  // ── Photo filtering ───────────────────────────────────────────────
+  // Skip the startup probe — at 10K employees it would fire 10K simultaneous
+  // HTTP requests. Instead, include anyone with a gravatar URL and let the
+  // browser's lazy-loading + per-tile onerror handler deal with broken images.
   useEffect(() => {
     if (!employees.length) return;
-    const allDirect = employees.every(
-      (e) => e.gravatar && !e.gravatar.includes('gravatar.com')
-    );
-    if (allDirect) { setPhotoEmployees(employees); return; }
-
-    const withGravatar = employees.filter((e) => !!e.gravatar);
-    if (!withGravatar.length) return;
-
-    const results: Employee[] = [];
-    let done = 0;
-    for (const emp of withGravatar) {
-      const img = new Image();
-      const finish = (ok: boolean) => {
-        if (ok) results.push(emp);
-        if (++done === withGravatar.length) setPhotoEmployees([...results]);
-      };
-      img.onload  = () => finish(true);
-      img.onerror = () => finish(false);
-      img.src = gravatarUrlSized(emp.gravatar!, 80);
-    }
+    setPhotoEmployees(employees.filter((e) => !!e.gravatar));
   }, [employees]);
 
   // ── Sequence controller ──────────────────────────────────────────
@@ -503,7 +491,8 @@ function Facewall({
     if (forceEmp) {
       emp = forceEmp;
     } else {
-      let q = queueRef.current.filter(e => activePool.some(p => p.email === e.email));
+      const activePoolEmails = new Set(activePool.map(e => e.email));
+      let q = queueRef.current.filter(e => activePoolEmails.has(e.email));
       if (!q.length) q = shuffle([...activePool]);
       emp = q.shift()!;
       queueRef.current = q;

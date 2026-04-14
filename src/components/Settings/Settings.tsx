@@ -306,11 +306,11 @@ function Settings() {
               <label className={styles.label}>Number of rows</label>
               <span className={styles.sliderValue}>{s.numRowsOverride === 0 ? 'Auto' : s.numRowsOverride}</span>
             </div>
-            <input type="range" className={styles.slider} min={0} max={7} step={1}
+            <input type="range" className={styles.slider} min={0} max={50} step={1}
               value={s.numRowsOverride}
               onChange={(e) => set('numRowsOverride', Number(e.target.value))}
             />
-            <div className={styles.sliderTicks}><span>Auto</span><span>3–4</span><span>7</span></div>
+            <div className={styles.sliderTicks}><span>Auto</span><span>10</span><span>25</span><span>50</span></div>
           </div>
 
           <hr className={styles.divider} />
