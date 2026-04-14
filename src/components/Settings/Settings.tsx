@@ -203,11 +203,11 @@ function Settings() {
                   <span />
                   <span className={styles.sliderValue}>{s.demoUserCount}</span>
                 </div>
-                <input type="range" className={styles.slider} min={10} max={100} step={10}
+                <input type="range" className={styles.slider} min={10} max={1000} step={10}
                   value={s.demoUserCount}
                   onChange={(e) => set('demoUserCount', Number(e.target.value))}
                 />
-                <div className={styles.sliderTicks}><span>10</span><span>50</span><span>100</span></div>
+                <div className={styles.sliderTicks}><span>10</span><span>250</span><span>500</span><span>1000</span></div>
               </div>
             </div>
           )}
